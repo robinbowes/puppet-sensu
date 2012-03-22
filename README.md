@@ -12,7 +12,7 @@ sensu::client is only tested on Ubuntu 11.04 and Debian 5.0.
 
 To install the sensu server components on a node, add the following to your node manifest.
 
-    node 'foobar.acme.c.bitbit.net' {
+    node 'foobar.example.org' {
       include sensu::server
     }
 
@@ -29,7 +29,7 @@ This installs the following components on that node:
 
 To install the sensu-client on a node, add the following to your node manifest.
 
-    node 'foobar.acme.c.bitbit.net' {
+    node 'foobar.example.org' {
       include sensu::client
     }
 
