@@ -1,0 +1,84 @@
+{
+  "checks": {
+    "check_apt": {
+      "notification": "Package upgrades",
+      "command": "PATH=$PATH:/usr/lib/nagios/plugins check_apt -d",
+      "subscribers": [ "base" ],
+      "standalone": true,
+      "interval": 3600,
+      "handlers": ["default"]
+    },
+    "check_cron": {
+      "notification": "cron process",
+      "command": "PATH=$PATH:/usr/lib/nagios/plugins check_procs -c 1:1 -C cron -u root -a cron",
+      "subscribers": [ "base" ],
+      "standalone": true,
+      "interval": 120,
+      "occurrences": 4,
+      "handlers": ["default"]
+    },
+    "check_disk": {
+      "notification": "Disk usage",
+      "command": "PATH=$PATH:/usr/lib/nagios/plugins check_disk -w 10% -c 5% -A -i '/mnt/share'",
+      "subscribers": [ "base" ],
+      "standalone": true,
+      "interval": 120,
+      "occurrences": 4,
+      "handlers": ["default"]
+    },
+    "check_load": {
+      "notification": "Load average",
+      "command": "PATH=$PATH:/usr/lib/nagios/plugins check_load -w 5 -c 10",
+      "subscribers": [ "base" ],
+      "standalone": true,
+      "interval": 120,
+      "occurrences": 4,
+      "handlers": ["default"]
+    },
+    "check_monit": {
+      "notification": "monit process",
+      "command": "PATH=$PATH:/usr/lib/nagios/plugins check_procs -c 1:1 -C monit -u root -a monit",
+      "subscribers": [ "base" ],
+      "standalone": true,
+      "interval": 120,
+      "occurrences": 4,
+      "handlers": ["default"]
+    },
+    "check_ntp_peer": {
+      "notification": "NTP",
+      "command": "PATH=$PATH:/usr/lib/nagios/plugins check_ntp_peer -H localhost -w 0.5 -c 1 -j -1:100 -k -1:200",
+      "subscribers": [ "base" ],
+      "standalone": true,
+      "interval": 120,
+      "occurrences": 4,
+      "handlers": ["default"]
+    },
+    "check_smtp": {
+      "notification": "SMTP",
+      "command": "PATH=$PATH:/usr/lib/nagios/plugins check_smtp -H localhost",
+      "subscribers": [ "base" ],
+      "standalone": true,
+      "interval": 120,
+      "occurrences": 4,
+      "handlers": ["default"]
+    },
+    "check_tcp_smtp": {
+      "notification": "TCP - SMTP",
+      "command": "PATH=$PATH:/usr/lib/nagios/plugins check_tcp -H localhost -p 25",
+      "subscribers": [ "base" ],
+      "standalone": true,
+      "interval": 120,
+      "occurrences": 4,
+      "handlers": ["default"]
+    },
+    "check_ssh": {
+      "notification": "SSH",
+      "command": "PATH=$PATH:/usr/lib/nagios/plugins check_ssh localhost",
+      "subscribers": [ "base" ],
+      "standalone": true,
+      "interval": 120,
+      "occurrences": 4,
+      "handlers": ["default"]
+    }
+  }
+}

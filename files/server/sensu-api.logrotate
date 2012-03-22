@@ -1,0 +1,8 @@
+/var/log/sensu/sensu-api.log {
+  compress
+  copytruncate
+  daily
+  delaycompress
+  missingok
+  rotate 7
+}

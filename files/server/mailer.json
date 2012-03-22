@@ -1,0 +1,6 @@
+{
+  "mailer": {
+    "mail_from": "sensu@virt-monitor.mintra.no",
+    "mail_to": "paal.hamre@mintra.no"
+  }
+}

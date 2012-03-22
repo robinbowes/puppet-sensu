@@ -1,0 +1,82 @@
+#!/bin/bash
+#### BEGIN INIT INFO
+## Provides:          <%= title %>
+## Required-Start:    $remote_fs
+## Required-Stop:     $remote_fs
+## Should-Start:      $all
+## Should-Stop:       $all
+## Default-Start:     2 3 4 5
+## Default-Stop:      0 1 6
+## Short-Description: Sensu monitoring framework
+#### END INIT INFO
+
+NAME=<%= title %>
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
+RUN_AS_USER=sensu
+SENSU_PIDFILE=/var/run/sensu/${NAME}.pid
+
+start() {
+  echo -n "Starting ${NAME}: "
+  if [ "x$USER" != "x$RUN_AS_USER" ]; then
+    sudo -u ${RUN_AS_USER} /usr/bin/${NAME} -l /var/log/sensu/${NAME}.log -b -p /var/run/sensu/${NAME}.pid
+  else
+    /usr/bin/${NAME} -l /var/log/sensu/${NAME}.log -b -p ${SENSU_PIDFILE}
+  fi
+  echo "done."
+}
+
+stop() {
+  if [ ! -f ${SENSU_PIDFILE} ]; then
+    pgrep -lf ${NAME} >/dev/null 2>&1
+    if [ "${?}" -ne "0" ]; then
+      echo "${NAME} is running, but the pidfile is not present."
+      exit 1
+    else
+      echo "${NAME} is not running."
+      exit 0
+    fi
+  else
+    pgrep -lf ${NAME} >/dev/null 2>&1
+    if [ "${?}" -ne "0" ]; then
+      echo "${NAME} is not running, but the pidfile is present"
+      echo "removing pidfile: ${SENSU_PIDFILE}"
+      rm -f ${SENSU_PIDFILE}
+      exit 0
+    fi
+  fi
+
+  echo -n "Shutting down ${NAME}: "
+  SENSU_PID=`cat ${SENSU_PIDFILE}`
+  kill ${SENSU_PID} && sleep 1
+
+  ps -p ${SENSU_PID} >/dev/null 2>&1
+  if [ "${?}" -eq "0" ]; then
+    sleep 2
+    ps -p ${SENSU_PID} >/dev/null 2>&1
+    if [ "${?}" -eq "0" ]; then
+      kill -9 ${SENSU_PID}
+    fi
+  fi
+
+  rm -f ${SENSU_PIDFILE}
+
+  echo "done."
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    stop
+    sleep 2
+    start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+esac
+
+exit 0

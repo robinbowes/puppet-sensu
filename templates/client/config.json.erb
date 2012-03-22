@@ -1,0 +1,29 @@
+{
+  "rabbitmq": {
+    "ssl": {
+      "private_key_file": "/etc/sensu/ssl/client_key.pem",
+      "cert_chain_file": "/etc/sensu/ssl/client_cert.pem"
+    },
+    "port": 5671,
+    "host": "sensu-server.example.org",
+    "user": "sensu",
+    "password": "sensu",
+    "vhost": "/sensu"
+<% if hostname == 'sensu-server' then -%>
+  },
+  "redis": {
+    "host": "localhost",
+    "port": 6379
+  },
+  "api": {
+    "host": "localhost",
+    "port": 4567
+  },
+  "dashboard": {
+    "host": "localhost",
+    "port": 8080,
+    "user": "admin",
+    "password": "admin"
+<% end -%>
+  }
+}
